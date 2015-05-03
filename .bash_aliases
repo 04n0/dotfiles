@@ -7,24 +7,31 @@ alias ......="cd ../../../../.."
 alias ~="cd ~" # `cd` is probably faster to type though
 alias -- -="cd -"
 
-# Clear screen with 0/CLR/clr or reset fucky terminal with 000
-alias 0="clear"
-alias CLR="clear"
-alias clr="clear"
-alias 000="reset"
-
 # Shortcuts
 alias dl="cd ~/Downloads"
 alias dt="cd ~/Desktop"
 alias g="git"
 alias h="history"
 alias j="jobs"
+alias edit='$EDITOR'
+alias qq='exit'
+# Clear screen with 0/CLR/clr or reset fucky terminal with 000
+alias 0="clear"
+alias CLR="clear"
+alias clr="clear"
+alias 000="reset"
 
 # Detect which `ls` flavor is in use
 if ls --color > /dev/null 2>&1; then # GNU `ls`
 	colorflag="--color"
 else # OS X `ls`
 	colorflag="-G"
+fi
+
+# Tree
+if [ ! -x "$(which tree 2>/dev/null)" ]
+then
+  alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 fi
 
 # List all files colorized in long format
@@ -66,7 +73,6 @@ alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
 # URL-encode strings
 alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'
 
-
 # Intuitive map function
 # For example, to list all directories that contain a certain file:
 # find . -name .gitattributes | map dirname
@@ -77,18 +83,33 @@ for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
 	alias "$method"="lwp-request -m '$method'"
 done
 
-# Make Grunt print stack traces by default
-command -v grunt > /dev/null && alias grunt="grunt --stack"
-
-
 # Vagrant stůff
-alias vp='vagrant provision'
+alias vp='vagrant provision' 
 alias vup='vagrant up'
-alias vss='vagrant ssh'
-alias vdestroy='vagrant destroy'
-
+alias vssh='vagrant ssh'
+alias vdstr='vagrant destroy'
+alias vll='vagrant list'
+alias vss='vagrant status'
 
 # Docker stůff
+alias dklc='docker ps -l'  # List last Docker container
+alias dklcid='docker ps -l -q'  # List last Docker container ID
+alias dklcip="docker inspect `dklcid` | grep IPAddress | cut -d '\"' -f 4"  # Get IP of last Docker container
+alias dkps='docker ps'  # List running Docker containers
+alias dkpsa='docker ps -a'  # List all Docker containers
+alias dki='docker images'  # List Docker images
+alias dkrmac='docker rm $(docker ps -a -q)'  # Delete all Docker containers
+alias dkrmlc='docker-remove-most-recent-container'  # Delete most recent (i.e., last) Docker container
+alias dkrmui='docker rmi $(docker images | grep "^<none>" | awk "{print $3}")'  # Delete all untagged Docker images
+alias dkrmli='docker-remove-most-recent-image'  # Delete most recent (i.e., last) Docker image
+alias dkrmi='docker-remove-images'  # Delete images for supplied IDs or all if no IDs are passed as arguments
+alias dkideps='docker-image-dependencies'  # Output a graph of image dependencies using Graphiz
+alias dkre='docker-runtime-environment'  # List environmental variables of the supplied image ID
+alias dkelc='docker exec -it `dklcid` bash' # Enter last container (works with Docker 1.3 and above)
+
+# Ansible
+alias ans=ansible
+alias ap=ansible-playbook
 
 
 #### Linux specific stůff
