@@ -35,6 +35,11 @@ then
   alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 fi
 
+###  bd alias c
+alias bd=". bd -s"
+###  colorized cat output ( see http://www.markbadolato.com/blog/2013/12/22/colorized-cat-output/ )
+alias ccat="pygmentize -O console256 -g"
+
 ###  List all files colorized in long format
 alias l="ls -lF ${colorflag}"
 
